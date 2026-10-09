@@ -14,13 +14,13 @@ This project analyzes 8 years of Indian patent grant data to uncover trends in t
 - **Power BI:** Star schema data modeling, DAX (Time Intelligence, CALCULATE, SAMEPERIODLASTYEAR), Drill-through, Custom Tooltips, Dynamic Titles.
 - **Data Quality & ETL:** Handling heterogeneous file formats, mixed date storage, text parsing, and identifying structural corruption in raw data.
 
-## 📊 Data Pipeline & Quality Findings (The "Gold" Section)
+## 📊 Data Pipeline & Quality Findings
 
 The raw data was not clean. I performed a rigorous data quality audit and resolved several critical issues:
 
 1.  **Heterogeneous Formats:** The 2022 file was tab-separated, while all other files were comma-separated. I built a separate Power Query parse step for 2022 and appended it to the master table.
 2.  **Corrupted Primary Key:** The `Publication Number` column was 100% corrupted in the source data (containing random date strings). I excluded it and used `Application Number` as the primary key for deduplication.
-3.  **Mixed Date Storage:** ~108,000 rows had dates stored as text (e.g., "25-03-2016") instead of real dates. I wrote a robust parsing layer in Excel (`=IF(ISNUMBER(date),YEAR(date),VALUE(RIGHT(date,4)))`) to extract the year correctly.
+3.  **Mixed Date Storage:** ~108,000 rows failed to parse as dates in Power Query due to mixed DD-MM-YYYY and MM-DD-YYYY formats, silently converting to blanks. Resolved by rebuilding the Power Query parsing logic and implementing a defensive Excel formula (`=IF(ISNUMBER(date),YEAR(date),VALUE(RIGHT(date,4)))`) to validate and standardize the remaining text-based dates, reducing the failure rate to just 1,635 corrupted records.
 4.  **Structural Row Shifting:** ~1,635 rows (1.07%) had column-shift corruption. Commas inside the `Title of Invention` broke the CSV delimiter, scattering title fragments into the `IPO Location` column. These rows were quarantined using an `IPO_Clean` derived column and excluded from visuals via slicer filters, but retained in the dataset for auditing.
 5.  **Partial-Year Data:** 2023 data only covered Jan–Mar. This was excluded from trend and YoY conclusions to prevent misleading analysis.
 6.  **Pendency Outliers:** 3 rows had impossible pendencies (>20 years). These were excluded from statistical averages but kept in the dataset.
