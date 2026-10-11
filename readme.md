@@ -71,3 +71,30 @@ GrantYear       = IF(L2="","",IF(ISNUMBER(L2),YEAR(L2),VALUE(RIGHT(L2,4))))
 Pendency_Days   = IF(OR(L2="",M2=""),"",IF(AND(ISNUMBER(L2),ISNUMBER(M2)),L2-M2,"CHECK"))
 IPO_Clean       = IF(OR(K2="Delhi",K2="Chennai",K2="Kolkata",K2="Mumbai"),K2,"Other")
 ```
+---
+
+## 8. Dashboard Screenshots
+
+### 8.1 Excel Dashboard
+
+---<img width="1912" height="971" alt="excel_dashboard" src="https://github.com/user-attachments/assets/3b9c19cb-871e-4a35-b6a0-f1c3f2500e40" />
+
+*Three PivotCharts (grant trend, Top-10 fields of invention, IPO workload), live KPI cards powered by `GETPIVOTDATA` and `INDEX/MATCH`, and cross-connected slicers (`GrantYear`, `IPO_Clean`) that filter all visuals simultaneously.*
+
+<br>
+
+
+### 8.2 Power BI — Executive Overview
+
+<img width="1897" height="912" alt="powerbi_executive_overview" src="https://github.com/user-attachments/assets/b049368d-f678-4221-84e7-6a9f4dc55d64" />
+
+*Star-schema-driven report with DAX-based KPI cards (Total Grants, Avg Pendency, Median Pendency, YoY Growth %), dynamic chart titles, and interactive slicers for Year and IPO location.*
+
+<br>
+
+### 8.3 Power BI — Drill-Through View (Patent Details)
+
+<img width="1687" height="927" alt="powerbi_drill_through" src="https://github.com/user-attachments/assets/2c14aa48-53d7-474d-9c8e-e9053f4ba95d" />
+
+*Right-click any technology field (e.g., Chemistry) on the Executive Overview and select "Drill through → Patent Details" to surface the underlying patent records — demonstrating record-level traceability from aggregate insight to source data.*
+
